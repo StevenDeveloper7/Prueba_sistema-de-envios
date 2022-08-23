@@ -1,0 +1,9 @@
+Sistema de Envios Entregalo
+
+1.Para ejecutar el proyecto deberas descomprimir el archivo
+2.Anteriormente debes tener instalado un entorno de servidor como xampp
+3.Ingresa a la consola de windows donde esta ubicado el proyecto
+4.Ejecuta el comando composer install
+5.Realiza las migraciones con php artisan migrate, luego de haber creado la base de datos
+6.Inicia el servidor or medio del comando php artisan serve
+7.En cualquier navegador ingresa como URL 127.0.0.1:8000  para iniciar el programa
