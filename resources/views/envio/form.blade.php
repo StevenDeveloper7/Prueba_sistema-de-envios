@@ -32,7 +32,7 @@
             <label for="ciudad_origen" class="form-label">Ciudad Origen</label>
             <select class="form-select" name="ciudad_origen" aria-label="Default select example">
                 @foreach($ciudades as $ciudad)
-                <option value=" {{$ciudad['city']}} "> {{$ciudad['city']}} </option>
+                <option value="{{$ciudad->code}}"> {{$ciudad->city}} </option>
                 @endforeach
               </select>
         </div>
@@ -40,7 +40,7 @@
             <label for="ciudad_destino" class="form-label">Ciudad destino</label>
             <select class="form-select" name="ciudad_destino" aria-label="Default select example">
                 @foreach($ciudades as $ciudad)
-                <option value=" {{$ciudad['city']}} "> {{$ciudad['city']}} </option>
+                <option value="{{$ciudad->code}}"> {{$ciudad->city}} </option>
                 @endforeach
               </select>
         </div>

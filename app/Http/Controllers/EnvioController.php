@@ -6,6 +6,8 @@ use App\Models\Envio;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use GuzzleHttp\Client;
+
 
 
 class EnvioController extends Controller
@@ -30,29 +32,54 @@ class EnvioController extends Controller
      */
     public function create()
     {
-        $ch = curl_init();
-    
-        curl_setopt($ch, CURLOPT_URL,"https://sandbox.entregalo.co/api/branches/list");
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json',
-            'token: GaiddltASrvIruZQmnL8qaHmWL3LUOjpVo1grvqBV7BnZRTu8nuvQI8AOzh82HulmjKhonYSUqt802aQ')
-        );
-    
-    
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    
-        $server_output = curl_exec($ch);
-    
-        curl_close ($ch);
-        $ciudades = $server_output;
-        $ciudades = json_decode($ciudades,true);
-        $ciudades = $ciudades['data'];
-        $ciudades = $ciudades['branches'];
 
+        //PETICION HTTP HECHA CON CURL
+
+        // $ch = curl_init();
+    
+        // curl_setopt($ch, CURLOPT_URL,"https://sandbox.entregalo.co/api/branches/list");
+        // curl_setopt($ch, CURLOPT_POST, 1);
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        //     'Content-Type: application/json',
+        //     'token: GaiddltASrvIruZQmnL8qaHmWL3LUOjpVo1grvqBV7BnZRTu8nuvQI8AOzh82HulmjKhonYSUqt802aQ')
+        // );
+    
+    
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+        // $server_output = curl_exec($ch);
+    
+        // curl_close ($ch);
+        // $ciudades = $server_output;
+        // $ciudades = json_decode($ciudades,true);
+        // $ciudades = $ciudades['data'];
+        // $ciudades = $ciudades['branches'];
+
+        //PETICION HTTP HECHA CON GUZZLE
+
+        $client = new Client();
+        $url = "https://sandbox.entregalo.co/api/cities";
+
+        $params = [
+            //If you have any Params Pass here
+        ];
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'token' => 'GaiddltASrvIruZQmnL8qaHmWL3LUOjpVo1grvqBV7BnZRTu8nuvQI8AOzh82HulmjKhonYSUqt802aQ'
+        ];
+
+        $response = $client->request('POST', $url, [
+            // 'json' => $params,
+            'headers' => $headers,
+            'verify'  => false,
+        ]);
+
+        $ciudades = json_decode($response->getBody());
+        $ciudades = $ciudades->data->Ciudades;
         $productos = Producto::all();
 
-        return view('envio.form')->with('ciudades', $ciudades)->with('productos', $productos);
+        return view('envio.form', compact('ciudades'))->with('productos', $productos);
       
     }
 
